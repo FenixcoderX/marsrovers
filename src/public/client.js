@@ -135,14 +135,16 @@ const latestRoverPhotos = (rover, state) => {
 */ 
 const getImageOfTheDay = (state) => {
     //const { apod } = state.toJS();
-    fetch(`http://localhost:3000/apod`)
+    // fetch(`http://localhost:3000/apod`)
+    fetch(`https://marsrovers-fenixcoderx.vercel.app/apod`)
         .then(res => res.json())
         .then(apod => modifyState(state, { apod }))
 };
 
 async function getImageOfTheDay1 (state) {
     //const { apod } = state.toJS();
-    return await fetch(`http://localhost:3000/apod`)
+    // return await fetch(`http://localhost:3000/apod`)
+    return await fetch(`https://marsrovers-fenixcoderx.vercel.app/apod`)
         .then(res => res.json())
         .then(apod =>  {console.log (JSON.stringify(apod)); return JSON.stringify (apod)})
         
@@ -153,7 +155,8 @@ let bbb = await getImageOfTheDay1 (store);
 
     const getImageOfTheDay2 = (state) => {
         //const { apod } = state.toJS();
-        return fetch(`http://localhost:3000/apod`)
+        // return fetch(`http://localhost:3000/apod`)
+        return fetch(`https://marsrovers-fenixcoderx.vercel.app/apod`)
             .then(res => res.json())
             .then(apod => {console.log (apod); return { apod }})
     };
@@ -167,7 +170,8 @@ let bbb = await getImageOfTheDay1 (store);
 */ 
 const getLatestPhotos = (rover,state) => {
     //const selectedRover = state.toJS().rovers[0];
-    fetch(`http://localhost:3000/latestPhotos/${rover}`)
+    // fetch(`http://localhost:3000/latestPhotos/${rover}`)
+    fetch(`https://marsrovers-fenixcoderx.vercel.app/latestPhotos/${rover}`)
         .then(res => res.json())
         .then(currentRover => {
             //console.log (currentRover); 
