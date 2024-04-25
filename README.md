@@ -2,7 +2,7 @@
 
 JavaScript (Functional) | Immutable JS Library | NodeJS | ExpressJS | NASA API | HTML & CSS | Responsive Design
 
-Web app that represents Mars rover dashboard that consumes the NASA API. The user is able to select a rover to see its most recent images, as well as important information about the rover and its mission. 
+Web app that provides Mars rover data by consuming the NASA API. The user is able to select a rover to see its most recent images, as well as important information about the rover and its mission. 
 On the main page the user can see the Astronomy Picture of the Day. 
 This app is based on Functional JavaScript using pure functions, Higher Order Functions, the Immutable JS Library. 
 
