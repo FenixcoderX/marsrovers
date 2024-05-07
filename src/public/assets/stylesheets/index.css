@@ -1,5 +1,3 @@
-/* -------------------  MOBILE  --------------------- */
-
 body {
   display: flex;
   flex-direction: column;
@@ -87,22 +85,4 @@ main {
 }
 .apodExplanation {
   letter-spacing: 3px;
-}
-
-
-/* -------------------  TABLET  --------------------- */
-@media (min-width: 768px) {
-  /* use mobile */
-}
-
-/* -------------------  DESKTOP  -------------------- */
-
-@media (min-width: 1224px) {
-  /* use mobile */
-}
-
-/* -------------------  LARGE SCREENS  -------------- */
-
-@media (min-width: 1824px) {
-  /* use mobile */
 }

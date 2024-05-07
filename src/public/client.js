@@ -1,10 +1,10 @@
-//Create base object using ImmutableJS
+// Create base object using ImmutableJS
 const store = Immutable.Map({
     apod: '',
     rovers: Immutable.List(['','Curiosity', 'Opportunity', 'Spirit'])
 });
 
-//Add link to the DOM
+// Add link to the DOM
 const root = document.getElementById('root');
 
 /**    
@@ -13,10 +13,8 @@ const root = document.getElementById('root');
 * @param {object} fromNASA data from JSON response
 */  
 const modifyState = (state, fromNASA) => {
-    //console.log ('From NASA',fromNASA);
-    const newState = state.merge(fromNASA);  //merge together data from NASA API response to(in) newState
-    //console.log ('NewState',newState.toJS());
-    //call render Function with app function as argument and choice what argument will be in app Function - imageOfTheDay or latestRoverPhotos Fucntion
+    const newState = state.merge(fromNASA);  // Merge together data from NASA API response to(in) newState
+    // Call render Function with app function as argument and choice what argument will be in app Function - imageOfTheDay or latestRoverPhotos Fucntion
     if(newState.toJS().apod!=='') {
         render(root, app(imageOfTheDay(newState.toJS().apod,newState),newState));  
     }
@@ -43,17 +41,15 @@ const render = async (root, htmlCode) => {
 */ 
 const app = (htmlCode,state) => {
     let { rovers, apod } = state.toJS();
-    //If there is something in apod key - it is true
+    // If there is something in apod key - it is true
     if (apod!=='') {
-        //console.log('Apod before html',apod);
     return `<h1>PHOTO OF THE DAY</h1>
             <div>
             ${htmlCode}
             </div>`
     }
-    //If there is something in rovers key - it is true
+    // If there is something in rovers key - it is true
     if (rovers[0]!=='') {
-        //console.log ('there is smth in Rovers')
         return `<div class = 'roverInfo'>
                     <li>Date of latest photos: ${state.toJS().rovers[0].earth_date}</li>
                     <li>Launch date: ${state.toJS().rovers[0].rover.launch_date}</li>
@@ -64,11 +60,6 @@ const app = (htmlCode,state) => {
     }
 }
 
-// listening for load event because page should load before any JS is called
-/*window.addEventListener('load', () => {
-    render(root, store)
-})*/
-
 // ------------------------------------------------------  COMPONENTS
 
 /**    
@@ -78,12 +69,12 @@ const app = (htmlCode,state) => {
 * @returns {string} HTML code for DOM
 */ 
 const imageOfTheDay = (apod, state) => {
-    //call getImageOfTheDay if apod is empty
+    // Call getImageOfTheDay if apod is empty
     if (!apod) {
         getImageOfTheDay(state);
     }
 
-    //return HTML code depending on content type - video or photo
+    // Return HTML code depending on content type - video or photo
     else if (apod.image.media_type === 'video') {
         return `
             <p>See video <a href='${apod.image.url}'>here</a></p>
@@ -104,14 +95,13 @@ const imageOfTheDay = (apod, state) => {
 * @returns {string} HTML code for DOM
 */ 
 const latestRoverPhotos = (rover, state) => {
-    //call getLatestPhotos if first element in array rover is empty
+    // Call getLatestPhotos if first element in array rover is empty
     if (!state.toJS().rovers[0]) {
         getLatestPhotos(rover,state);
     } else {
 
-    //return HTML code
-        //console.log ('Before rendering of the rover',state.toJS().rovers);
-        //using .map to create html content for each photo from rover
+    // Return HTML code
+        // Using .map to create html content for each photo from rover
         const roverPhotosHTML = state.toJS().rovers.map (value => {
                 return `<div>
                         <img class = 'roverLatestPhoto' src='${value.img_src}' alt='Rover's photo' width='100%'>
@@ -122,11 +112,6 @@ const latestRoverPhotos = (rover, state) => {
     }
 }
 
-/******** check API latestRoverPhotos */
-        /* in console:
-        latestRoverPhotos ('Curiosity',store);
-        */
-
 // ------------------------------------------------------  API CALLS
 
 /**    
@@ -134,34 +119,23 @@ const latestRoverPhotos = (rover, state) => {
 * @param {object} state main object
 */ 
 const getImageOfTheDay = (state) => {
-    //const { apod } = state.toJS();
     fetch(`http://localhost:3000/apod`)
-    // fetch(`https://marsrovers-fenixcoderx.vercel.app/apod`)
         .then(res => res.json())
         .then(apod => modifyState(state, { apod }))
 };
 
 async function getImageOfTheDay1 (state) {
-    //const { apod } = state.toJS();
     return await fetch(`http://localhost:3000/apod`)
-    // return await fetch(`https://marsrovers-fenixcoderx.vercel.app/apod`)
         .then(res => res.json())
         .then(apod =>  {console.log (JSON.stringify(apod)); return JSON.stringify (apod)})
         
     };
-/*
-let bbb = await getImageOfTheDay1 (store);
-*/
 
     const getImageOfTheDay2 = (state) => {
-        //const { apod } = state.toJS();
         return fetch(`http://localhost:3000/apod`)
-        // return fetch(`https://marsrovers-fenixcoderx.vercel.app/apod`)
             .then(res => res.json())
             .then(apod => {console.log (apod); return { apod }})
     };
-
-//let bbb = await getImageOfTheDay2 (store);
 
 /**    
 * @description API call to latest photos and call modifyState Function
@@ -169,44 +143,31 @@ let bbb = await getImageOfTheDay1 (store);
 * @param {object} state main object
 */ 
 const getLatestPhotos = (rover,state) => {
-    //const selectedRover = state.toJS().rovers[0];
     fetch(`http://localhost:3000/latestPhotos/${rover}`)
-    // fetch(`https://marsrovers-fenixcoderx.vercel.app/latestPhotos/${rover}`)
         .then(res => res.json())
         .then(currentRover => {
-            //console.log (currentRover); 
             const rovers = currentRover.latest_photos;
             modifyState(state, {rovers})})
 }
-
-/******** check API getLatestPhotos */
-        /* in console:
-        getLatestPhotos ('Curiosity',store);
-        */
 
 /**    
 * @description IIFE with event listeners to buttons click
 */ 
 (function clickToButtons () {
     document.querySelector('#buttons').addEventListener('click',(event) => {
-        //check that click to button and remove btnActive class from buttons
+        // Check that click to button and remove btnActive class from buttons
         if (event.target.matches('button, button *')) {
             document.querySelectorAll('.btn').forEach((element) => {
             element.classList.remove('btnActive');
             })
-            //check if button is bonus, set btnActive class for button, hide start info and call imageOfTheDay Function
+            // Check if button is bonus, set btnActive class for button, hide start info and call imageOfTheDay Function
             if (event.target.value === 'bonus') {
-                //console.log ('it is APOD');
-                //console.log (event.target.value);
                 document.querySelector('#startInfo').style.display = 'none';
                 document.querySelector (`#${event.target.id}`).classList.add ('btnActive');
                 imageOfTheDay (store.toJS().apod,store);
 
-            //check if button is rover, set btnActive class for button, hide start info and call latestRoverPhotos Function
+            // Check if button is rover, set btnActive class for button, hide start info and call latestRoverPhotos Function
             } else {
-                //console.log ('this is ROVER');
-                //console.log (event.target.value);
-                //console.log (event.target.id);
                 document.querySelector('#startInfo').style.display = 'none';
                 document.querySelector (`#${event.target.id}`).classList.add ('btnActive');
                 latestRoverPhotos(event.target.value,store);
